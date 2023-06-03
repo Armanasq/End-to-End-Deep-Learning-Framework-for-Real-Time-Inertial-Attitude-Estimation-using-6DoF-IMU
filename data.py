@@ -6,25 +6,6 @@ import scipy.interpolate
 from keras.utils import Sequence
 
 
-def interpolate_3dvector_linear(input, input_timestamp, output_timestamp):
-    assert input.shape[0] == input_timestamp.shape[0]
-    func = scipy.interpolate.interp1d(input_timestamp, input, axis=0)
-    interpolated = func(output_timestamp)
-    return interpolated
-
-
-def load_euroc_mav_dataset(imu_data_filename, gt_data_filename):
-    gt_data = pd.read_csv(gt_data_filename).values
-    imu_data = pd.read_csv(imu_data_filename).values
-
-    gyro_data = interpolate_3dvector_linear(
-        imu_data[:, 1:4], imu_data[:, 0], gt_data[:, 0])
-    acc_data = interpolate_3dvector_linear(
-        imu_data[:, 4:7], imu_data[:, 0], gt_data[:, 0])
-    pos_data = gt_data[:, 1:4]
-    ori_data = gt_data[:, 4:8]
-
-    return gyro_data, acc_data, pos_data, ori_data
 
 
 def load_oxiod_dataset(imu_data_filename, gt_data_filename):
@@ -66,41 +47,6 @@ def force_quaternion_uniqueness(q):
         
             # print("done")
     return q_data
-    '''
-    q_data = q
-
-    if np.absolute(q_data[:, 0]) > 1e-05:
-        if q_data[:, 0] < 0:
-            return -q
-        else:
-            return q
-    elif np.absolute(q_data[:, 1]) > 1e-05:
-        if q_data[1] < 0:
-            return -q
-        else:
-            return q
-    elif np.absolute(q_data[:, 2]) > 1e-05:
-        if q_data[2] < 0:
-            return -q
-        else:
-            return q
-    else:
-        if q_data[:, 3] < 0:
-            return -q
-        else:
-            return q
-'''
-
-
-def cartesian_to_spherical_coordinates(point_cartesian):
-    delta_l = np.linalg.norm(point_cartesian)
-
-    if np.absolute(delta_l) > 1e-05:
-        theta = np.arccos(point_cartesian[2] / delta_l)
-        psi = np.arctan2(point_cartesian[1], point_cartesian[0])
-        return delta_l, theta, psi
-    else:
-        return 0, 0, 0
 
 
 def load_dataset_6d_rvec(imu_data_filename, gt_data_filename, window_size=200, stride=10):
