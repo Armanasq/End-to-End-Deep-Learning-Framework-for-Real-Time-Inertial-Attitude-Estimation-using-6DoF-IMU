@@ -4,6 +4,7 @@
 Code repo of paper End-to-End Deep Learning Framework for Real-Time Inertial Attitude Estimation using 6DoF IMU
 
 ScienceDirect: [Link](https://doi.org/10.1016/j.measurement.2023.113105)
+
 Arxiv: [Link](https://arxiv.org/abs/2302.06037)
 
 # IMU Quaternion Prediction
