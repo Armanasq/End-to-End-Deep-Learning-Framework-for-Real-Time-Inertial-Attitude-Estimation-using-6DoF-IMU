@@ -1,7 +1,8 @@
 <a href="https://zenodo.org/badge/latestdoi/603502780"><img src="https://zenodo.org/badge/603502780.svg" alt="DOI"></a>
 
 # End-to-End-Deep-Learning-Framework-for-Real-Time-Inertial-Attitude-Estimation-using-6DoF-IMU
-Code repo of paper End-to-End Deep Learning Framework for Real-Time Inertial Attitude Estimation using 6DoF IMU
+Code repo of paper Generalizable end-to-end deep learning frameworks for real-time attitude estimation using 6DoF inertial measurement units
+
 
 ScienceDirect: [Link](https://doi.org/10.1016/j.measurement.2023.113105)
 
