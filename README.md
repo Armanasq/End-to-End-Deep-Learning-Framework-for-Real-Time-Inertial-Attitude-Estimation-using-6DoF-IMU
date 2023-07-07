@@ -1,20 +1,18 @@
 <a href="https://zenodo.org/badge/latestdoi/603502780"><img src="https://zenodo.org/badge/603502780.svg" alt="DOI"></a>
 
 # End-to-End-Deep-Learning-Framework-for-Real-Time-Inertial-Attitude-Estimation-using-6DoF-IMU
-Code repo of paper End-to-End Deep Learning Framework for Real-Time Inertial Attitude Estimation using 6DoF IMU
+Code repo of paper **Generalizable end-to-end deep learning frameworks for real-time attitude estimation using 6DoF inertial measurement units**
 
-Paper: https://www.researchgate.net/publication/368469434_END-TO-END_DEEP_LEARNING_FRAMEWORK_FOR_REAL-TIME_INERTIAL_ATTITUDE_ESTIMATION_USING_6DOF_IMU
 
-Arxiv: https://arxiv.org/abs/2302.06037
+ScienceDirect: [Link](https://doi.org/10.1016/j.measurement.2023.113105)
 
-Authorea: https://www.authorea.com/doi/full/10.22541/au.167628608.89589390/v1
+Arxiv: [Link](https://arxiv.org/abs/2302.06037)
 
 # IMU Quaternion Prediction
 
 This repository contains code for training and evaluating a deep learning model for predicting quaternion orientations using inertial measurement unit (IMU) sensor data. The model is trained using a combination of accelerometer, gyroscope, and magnetometer readings from the IMU sensors.
 
 ## Table of Contents
-- [End-to-End-Deep-Learning-Framework-for-Real-Time-Inertial-Attitude-Estimation-using-6DoF-IMU](#end-to-end-deep-learning-framework-for-real-time-inertial-attitude-estimation-using-6dof-imu)
 - [IMU Quaternion Prediction](#imu-quaternion-prediction)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
