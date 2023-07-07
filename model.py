@@ -34,6 +34,22 @@ from symbol import import_from
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 os.environ['PYTHONHASHSEED'] = '0'
+class AttitudeEstimationPINN(Model):
+    def __init__(self):
+        super(AttitudeEstimationPINN, self).__init__()
+        self.dense1 = Dense(64, activation='relu')
+        self.dense2 = Dense(64, activation='relu')
+        self.dense3 = Dense(64, activation='relu')
+        self.dense4 = Dense(4, activation='tanh')
+
+    def call(self, inputs):
+        x = self.dense1(inputs)
+        x = self.dense2(x)
+        x = self.dense3(x)
+        outputs = self.dense4(x)
+        return outputs
+
+
 
 def AttLayer(q):
     def compute_output_shape(self, input_shape):
@@ -504,20 +520,4 @@ def roll_est(window_size):
     model.summary()
     return model
 
-def riann_test(batch_size,window_size):
-    timesteps = 1
-    acc = Input(batch_shape=(batch_size, timesteps, 3), name='acc')
-    gyro = Input(batch_shape=(batch_size, timesteps, 3), name='gyro')
-    fs = Input(batch_shape=(batch_size, timesteps, 1), name='fs')
 
-    concat = concatenate([acc, gyro, fs])
-    concat = Bidirectional(GRU(200, stateful=True,  return_sequences=True,  name='GRU1'))(concat)
-    concat = Bidirectional(GRU(200, stateful=True,  return_sequences=True, name='GRU2'))(concat)
-    concat = Flatten(name='Flatten')(concat)
-    quat = Dense(4, activation='linear', name='quat')(concat)
-    quat = Lambda(lambda x: K.l2_normalize(x, axis=-1), name='NormalizeQuat')(quat)
-    model = Model(inputs=[acc, gyro, fs], outputs=quat)
-    model.summary()
-    return model
-
-riann_test(128,100)

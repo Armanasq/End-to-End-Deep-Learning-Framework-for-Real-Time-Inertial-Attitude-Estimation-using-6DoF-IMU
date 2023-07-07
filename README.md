@@ -65,6 +65,7 @@ The code in this repository is organized into several modules, each responsible 
 
 - `model.py`: Contains the definition of the deep learning model used for quaternion prediction. It utilizes convolutional and recurrent neural network layers to learn spatial and temporal patterns from the sensor data.
 - `dataset_loader.py`: Implements functions for loading and preprocessing the IMU sensor data. It handles reading data from different sources, merging the data into a single dataset, and splitting it into training and testing sets. It also performs windowing and normalization of the sensor data.
+  - NOTE: define your dataset path by `dataset_path = ""`
 - `learning.py`: Includes functions for training and evaluating the model. It compiles the model with an appropriate optimizer and loss function, sets up callbacks for early stopping, learning rate scheduling, model checkpointing, and tensorboard logging. It also trains the model using the training dataset and evaluates its performance on the testing dataset.
 - `util.py`: Provides utility functions used throughout the project, such as functions for computing quaternion error angles and visualizing sensor data.
 

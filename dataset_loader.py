@@ -8,8 +8,8 @@ import h5py
 from keras.utils import Sequence
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 os.environ['PYTHONHASHSEED'] = '0'
-dataset_path = "/home/arman/Neural Network in Python/RNN/Dataset/"
-#dataset_path = "/media/arman/Data/Dataset/Oxford Inertial Odometry Dataset_2.0/"
+dataset_path = ""
+
 
 def quat2euler(q):
     """

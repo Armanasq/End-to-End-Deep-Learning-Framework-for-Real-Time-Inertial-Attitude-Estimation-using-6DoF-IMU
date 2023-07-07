@@ -32,14 +32,9 @@ from util import *
 # import inspect
 import inspect
 from inspect import getmembers, isfunction
-import ModelArch 
 from keras.callbacks import *
 
-# Configure GPU options
-config = ConfigProto()
-config.gpu_options.allow_growth = True
-session = Session(config=config)
-set_session(session)
+
 
 # Get current timestamp
 timestr = time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -52,14 +47,14 @@ tf.random.set_seed(89)
 # Initialize variables
 imu_data = []
 epochs = 300
-batch_size = 2
+batch_size = 520
 lr = 0.0001 * (batch_size / 32)
-window_size = 1
+window_size = 100
 stride = 4
 if window_size == 1:
     stride = 1
 version = 1
-pred_model = riann_test
+pred_model = Model_A
 
 
 def scheduler(epoch, lr):
@@ -272,6 +267,14 @@ def data_train(window_size, stride):
     #print(Quat.shape)
     return [Acc, Gyro, Mag, Fs, ], [Quat]
 
+def learningRate(model):
+    [gyro, acc, mag, fs], [quat] = data_train(window_size, stride)
+    acc_train, acc_val, quat_train, quat_val = train_test_split(acc, quat, test_size=0.2, random_state=42, shuffle=True)
+    inputs = np.concatenate((gyro, acc_train, mag, fs), axis=1)
+    outputs = quat_train
+    model = model()
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss=PILoss)
+    model.fit(inputs, outputs, batch_size=batch_size, epochs=epochs, validation_data=(inputs_val, outputs_val), callbacks=[early_stopping, lr_scheduler])
 
 def train(pred_model):
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -281,12 +284,11 @@ def train(pred_model):
     quat = Att(quat)
     # find the factors of len(quat)
     print("quat", quat.shape)
-    x_acc, x_gyro, x_mag, x_fs, quat = x_acc[0:2580000,:], x_gyro[0:2580000,:], x_mag[0:2580000,:], x_fs[0:2580000,:], quat[0:2580000,:]
+    x_acc, x_gyro, x_mag, x_fs, quat = x_acc, x_gyro, x_mag, x_fs, quat
     x_acc, x_gyro, x_mag, x_fs, quat = shuffle(x_acc, x_gyro, x_mag, x_fs, quat)
-    batch_size = 129
+
     lr = 0.0001 *(batch_size/32)
-    x_acc, x_gyro = x_acc.reshape(x_acc.shape[0], 1,x_acc.shape[1]), x_gyro.reshape(
-        x_gyro.shape[0], 1,x_gyro.shape[1])
+    #x_acc, x_gyro = x_acc.reshape(x_acc.shape[0], 1,x_acc.shape[1]), x_gyro.reshape(x_gyro.shape[0], 1,x_gyro.shape[1])
     
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     quat = quaternion_roll(quat)
@@ -318,7 +320,7 @@ def train(pred_model):
                     earlystopping,reduce_lr]
     # shuffle data for training TqdmCallback(verbose=2)
     print("Learning rate: ", lr)
-    model = pred_model(batch_size,window_size)
+    model = pred_model(window_size)
     # truncated backpropagation through time
     '''
     model = load_model("./model_checkpoint.hdf5",
@@ -392,19 +394,6 @@ def train(pred_model):
 
 
 def main():
-    functions_list = getmembers(ModelArch, isfunction)
-    #print("Functions :", functions_list)
-    # for i in range(2, 11):
-    #pred_model = Barch_6
-    # for all functions in ModelArch.py, import all functions in ModelArch.py
-    '''for name, obj in inspect.getmembers(ModelArch):
-        if inspect.isfunction(obj):
-            globals()[name] = obj
-            print(name)
-            pred_model = obj
-            train(pred_model)
-    '''
-    #learningRate(pred_model)
     train(pred_model)
 
 if __name__ == '__main__':
